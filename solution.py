@@ -1,30 +1,82 @@
 import csv
-res=apt=dsa=git=com=0
-no_resume_more_than_80 = 0
-no_dsa_more_than_80 = 0
+
+apt = 0
+python = 0
+sql = 0
+communication = 0
+
+no_projects_completed_more_than_5 = 0
+no_python_more_than_80 = 0
+no_sql_more_than_80 = 0
 no_overall_more_than_80 = 0
-with open('student_Data.csv','r', newline="", encoding='utf-8') as f:
-    reader=csv.reader(f)
-    next(reader)
+
+with open(
+    "placement_readiness.csv",
+    "r",
+    newline="",
+    encoding="utf-8"
+) as f:
+
+    reader = csv.reader(f)
+
+    next(reader)  # skip header
+
     for row in reader:
-        res+=int(row[5])
-        apt+=int(row[1])
-        dsa+=int(row[2])
-        git+=int(row[3])
-        com+=int(row[4])
-        overall_score = (int(row[1]) + int(row[2]) + int(row[3]) + int(row[4]) + int(row[5])) / 5
-        if int(row[5]) > 80:
-            no_resume_more_than_80 += 1
-        if int(row[2])  > 80:
-            no_dsa_more_than_80 += 1
+
+        python_score = int(row[2])
+        sql_score = int(row[3])
+        aptitude_score = int(row[4])
+        communication_score = int(row[5])
+        projects_completed = int(row[6])
+
+        overall_score = (
+            python_score
+            + sql_score
+            + aptitude_score
+            + communication_score
+        ) / 4
+
+        python += python_score
+        sql += sql_score
+        apt += aptitude_score
+        communication += communication_score
+
+        if projects_completed > 5:
+            no_projects_completed_more_than_5 += 1
+
+        if python_score > 80:
+            no_python_more_than_80 += 1
+
+        if sql_score > 80:
+            no_sql_more_than_80 += 1
+
         if overall_score > 80:
             no_overall_more_than_80 += 1
-print("-----REPORT OF COLLEGE PLACEMET READINESS TRACKER-----")
-print(f"Number of students with resume score more than 80: {no_resume_more_than_80}")
-print(f"Number of students with DSA score more than 80: {no_dsa_more_than_80}")
-print(f"Number of students with overall score more than 80: {no_overall_more_than_80}")
-print(f"Average aptitude score of all students: {apt/60}")
-print(f"Average DSA score of all students: {dsa/60}")
-print(f"Average GitHub score of all students: {git/60}")
-print(f"Average Communication score of all students: {com/60}")
-print(f"Average Resume score of all students: {res/60}")
+
+
+print("----- REPORT OF COLLEGE PLACEMENT READINESS TRACKER -----")
+
+print(
+    f"Number of students with projects completed more than 5: "
+    f"{no_projects_completed_more_than_5}"
+)
+
+print(
+    f"Number of students with Python score more than 80: "
+    f"{no_python_more_than_80}"
+)
+
+print(
+    f"Number of students with SQL score more than 80: "
+    f"{no_sql_more_than_80}"
+)
+
+print(
+    f"Number of students with overall score more than 80: "
+    f"{no_overall_more_than_80}"
+)
+
+print(f"Average aptitude score: {apt / 120:.2f}")
+print(f"Average Python score: {python / 120:.2f}")
+print(f"Average SQL score: {sql / 120:.2f}")
+print(f"Average Communication score: {communication / 120:.2f}")
